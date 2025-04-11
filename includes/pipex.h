@@ -6,7 +6,7 @@
 /*   By: yukravch <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 19:19:12 by yukravch          #+#    #+#             */
-/*   Updated: 2025/04/09 19:45:54 by yukravch         ###   ########.fr       */
+/*   Updated: 2025/04/11 11:12:47 by yukravch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,5 +18,9 @@
 #include "get_next_line.h"
 
 #include <unistd.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <fcntl.h>
+
 
 #endif
