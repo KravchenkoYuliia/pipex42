@@ -6,7 +6,7 @@
 #    By: yukravch <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/09 18:47:58 by yukravch          #+#    #+#              #
-#    Updated: 2025/04/10 21:17:44 by yukravch         ###   ########.fr        #
+#    Updated: 2025/04/11 17:45:45 by yukravch         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 NAME = pipex
@@ -20,7 +20,7 @@ SRC_DIR = sources
 OBJ_DIR = objects
 INC_DIR = includes -I libft/includes
 
-FILES = main.c
+FILES = main.c exit.c
 SRC = $(addprefix $(SRC_DIR)/, $(FILES))
 OBJ = $(addprefix $(OBJ_DIR)/, $(FILES:.c=.o))
 CFLAGS = -Wall -Wextra -Werror -g3 -I $(INC_DIR)

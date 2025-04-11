@@ -3,18 +3,48 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yukravch <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: yukravch <yukravch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 19:18:14 by yukravch          #+#    #+#             */
-/*   Updated: 2025/04/11 14:00:28 by yukravch         ###   ########.fr       */
+/*   Updated: 2025/04/11 18:00:10 by yukravch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 #include "ft_printf.h"
 
-int	main()
+int	ft_check_file_existing(char *file)
 {
+	int	fd;
+
+	fd = open(file, O_RDWR);
+	if (fd == -1)
+		return (-1);
+	return (fd);
+}
+
+int	main(int ac, char **av, char **envp)
+{
+	(void)envp;
+	(void)ac;
+	int	infile;
+	int	outfile;
+
+	infile = ft_check_file_existing(av[1]);
+	if (infile == -1)
+	{
+		perror("Error\nInfile does not exist");
+		exit(EXIT_FAILURE);
+	}
+	outfile = ft_check_file_existing(av[4]);
+	if (outfile == -1)
+	{
+		perror("Error\nOutfile does not exist");
+		ft_exit(infile, 0);
+	}
+	close(infile);
+	close(outfile);
+	/*
 	int fd[2];
 	pipe(fd);
 	int id = fork();
@@ -36,5 +66,5 @@ int	main()
 		dup2(fd[1], 1);
 		close(fd[1]);
 		execve(args1[0], args1, NULL);
-	}
+	}*/
 }
