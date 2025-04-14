@@ -6,7 +6,7 @@
 /*   By: yukravch <yukravch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 19:18:14 by yukravch          #+#    #+#             */
-/*   Updated: 2025/04/13 20:28:58 by yukravch         ###   ########.fr       */
+/*   Updated: 2025/04/14 14:55:21 by yukravch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,18 +24,24 @@ void	ft_check_file1_exists(char *file1)
 		exit(EXIT_FAILURE);
 	}
 }
-/*
+
 void	ft_read_from_file1(char *file1, char *cmd1)
 {
+	(void)file1;
 	int	fd[2];
 
-	pipe(fd);
+	pipe(fd);		//fd[0] - read from it
+				//fd[1] - write on it
 	
-	fd[0] - read from it
-	fd[1] - write on it
-
+	fd[0] = open(file1, O_RDONLY);
+	dup2(5, fd[0]);
+	ft_printf("fd[0] = %d", 5);
+	char *args[] = {"ls", "-l", NULL};
+	if (execve(cmd1, args, 5) == -1)
+		ft_printf("Fail\n");
+	
 }
-*/
+
 int	main(int ac, char **av, char **envp)
 {
 	(void)envp;
@@ -57,7 +63,7 @@ int	main(int ac, char **av, char **envp)
 	if (pid1 == 0)
 	{
 		ft_printf("I'm first child, I read from file1\n");
-		//ft_read_from_file1(av[1], av[2]);
+		ft_read_from_file1(av[1], av[2]);
 		exit(EXIT_SUCCESS);
 	}
 	
@@ -70,6 +76,7 @@ int	main(int ac, char **av, char **envp)
 		perror("pipex");
 		exit(EXIT_FAILURE);
 	}
+
 	if (pid2 == 0)
 	{
 		ft_printf("I'm second child, I write on file2\n");
@@ -78,7 +85,7 @@ int	main(int ac, char **av, char **envp)
 
 	waitpid(pid2, NULL, 0);
 	ft_printf("I'm parent: Second child (pid %d) finished\n", pid2);
-
+	
 
 
 
