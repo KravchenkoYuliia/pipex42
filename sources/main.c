@@ -25,21 +25,18 @@ void	ft_check_file1_exists(char *file1)
 	}
 }
 
-void	ft_read_from_file1(char *file1, char *cmd1)
+void	ft_exec_first_com(char *file1, char *cmd1)
 {
 	(void)file1;
-	int	fd[2];
+	(void)cmd1;
 
-	pipe(fd);		//fd[0] - read from it
+	int	pipe_end[2];
+
+	pipe(pipe_end);	//fd[0] - read from it
 				//fd[1] - write on it
-	
-	fd[0] = open(file1, O_RDONLY);
-	dup2(5, fd[0]);
-	ft_printf("fd[0] = %d", 5);
-	char *args[] = {"ls", "-l", NULL};
-	if (execve(cmd1, args, 5) == -1)
-		ft_printf("Fail\n");
-	
+	close(pipe_end[0]);
+	dup2(pipe_end[1], STDOUT_FILENO);
+	//char *args[] = {"ls", "-l", NULL};
 }
 
 int	main(int ac, char **av, char **envp)
@@ -62,24 +59,26 @@ int	main(int ac, char **av, char **envp)
 	}
 	if (pid1 == 0)
 	{
-		ft_printf("I'm first child, I read from file1\n");
-		ft_read_from_file1(av[1], av[2]);
+		ft_printf("I'm first child, I execute first commande\n");
+		ft_exec_first_com(av[1], av[2]);
 		exit(EXIT_SUCCESS);
 	}
-	
 	waitpid(pid1, NULL, 0);
 	ft_printf("I'm parent: First child (pid %d) finished\n\n", pid1);
-
-	int	pid2 = fork();
-	if (pid2 == -1)
+	
+	int pid2 = 0;
+	if (pid1 != 0)
 	{
-		perror("pipex");
-		exit(EXIT_FAILURE);
+		pid2 = fork();
+		if (pid2 == -1)
+		{
+			perror("pipex");
+			exit(EXIT_FAILURE);
+		}
 	}
-
 	if (pid2 == 0)
 	{
-		ft_printf("I'm second child, I write on file2\n");
+		ft_printf("I'm second child, I execute second commande\n");
 		exit(EXIT_SUCCESS);
 	}
 
