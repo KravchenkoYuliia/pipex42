@@ -6,7 +6,7 @@
 /*   By: yukravch <yukravch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 19:18:14 by yukravch          #+#    #+#             */
-/*   Updated: 2025/04/14 14:55:21 by yukravch         ###   ########.fr       */
+/*   Updated: 2025/04/16 18:54:17 by yukravch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,24 +25,55 @@ void	ft_check_file1_exists(char *file1)
 	}
 }
 
-void	ft_exec_first_com(char *file1, char *cmd1)
+void	ft_first_child(int file1_fd, char *cmd1, int pipe_read, int pipe_write)
 {
-	(void)file1;
 	(void)cmd1;
+	char	*args[3] = {"ls", "-l", NULL};
 
-	int	pipe_end[2];
-
-	pipe(pipe_end);	//fd[0] - read from it
-				//fd[1] - write on it
-	close(pipe_end[0]);
-	dup2(pipe_end[1], STDOUT_FILENO);
-	//char *args[] = {"ls", "-l", NULL};
+	close(pipe_read);
+	dup2(file1_fd, STDIN_FILENO);
+	dup2(pipe_write, STDOUT_FILENO);
+	if (execve("/bin/ls", args, NULL) == -1)
+	{
+		perror("pipex");
+		ft_printf("Fail");
+	}
 }
 
-int	main(int ac, char **av, char **envp)
+void	ft_second_child(int file_fd2, char *cmd2, int pipe_read, int pipe_write)
 {
-	(void)envp;
-	(void)ac;
+	(void)cmd2;
+	(void)file_fd2;
+	char	*args[3] = {"wc", "-l", NULL};
+
+	close(pipe_write);
+	dup2(pipe_read, STDIN_FILENO);
+	dup2(file_fd2, STDOUT_FILENO);
+	if (execve("/bin/wc", args, NULL) == -1)
+	{
+		perror("pipex");
+		ft_printf("Fail");
+	}
+}
+/*
+void	ft_parent_process(char **av, char **env)
+{
+	(void)av;
+	(void)env;
+	ft_pipe();
+	ft_fork1();
+	ft_fork2();
+}
+*/
+int	main(int ac, char **av, char **env)
+{
+	(void) env;
+	int	file1_fd;
+	int	file2_fd;
+	//t_pipe_end	*pipex;
+	int	pipe_end[2];
+	int	pid1;
+	int	pid2;
 	
 	if (ac != 5)
 	{
@@ -50,51 +81,40 @@ int	main(int ac, char **av, char **envp)
 		exit(EXIT_FAILURE);
 	}
 	ft_check_file1_exists(av[1]);
+	//ft_parent_process(av, env);
+	//pipex = (t_pipe_end *)malloc(sizeof(t_pipe_end));
+	pipe(pipe_end);
+	//pipe((int *)pipex);
+	pid1 = fork();
+	file1_fd = open(av[1], O_RDONLY);
+	if (pid1 == 0)
+	{
+		ft_printf("I'm first child, I execute first command\n");
+		ft_first_child(file1_fd, av[2], pipe_end[0], pipe_end[1]);
+	}
+	waitpid(pid1, NULL, 0);
+	close(file1_fd);
+	ft_printf("I'm parent: First child (pid %d) finished\n\n", pid1);
 	
-	int pid1 = fork();
-	if (pid1 == -1)
+	pid2 = 0;
+	file2_fd = 0;
+	pid2 = fork();
+	if (pid2 == -1)
 	{
 		perror("pipex");
 		exit(EXIT_FAILURE);
 	}
-	if (pid1 == 0)
-	{
-		ft_printf("I'm first child, I execute first commande\n");
-		ft_exec_first_com(av[1], av[2]);
-		exit(EXIT_SUCCESS);
-	}
-	waitpid(pid1, NULL, 0);
-	ft_printf("I'm parent: First child (pid %d) finished\n\n", pid1);
-	
-	int pid2 = 0;
-	if (pid1 != 0)
-	{
-		pid2 = fork();
-		if (pid2 == -1)
-		{
-			perror("pipex");
-			exit(EXIT_FAILURE);
-		}
-	}
+
+	file2_fd = open(av[4], O_WRONLY | O_CREAT, 00700);
 	if (pid2 == 0)
 	{
-		ft_printf("I'm second child, I execute second commande\n");
-		exit(EXIT_SUCCESS);
+		ft_printf("I'm second child, I execute second command\n");
+		ft_second_child(file2_fd, av[4], pipe_end[0], pipe_end[1]);
 	}
-
+	close(pipe_end[0]);
+	close(pipe_end[1]);
 	waitpid(pid2, NULL, 0);
-	ft_printf("I'm parent: Second child (pid %d) finished\n", pid2);
 	
-
-
-
-
-
-	int file2 = open(av[4], O_WRONLY | O_CREAT, 00700);
-	if (file2 == -1)
-	{
-		ft_printf("Fail");
-		exit(EXIT_FAILURE);
-	}
-	close(file2);
+	close(file2_fd);
+	ft_printf("I'm parent: Second child (pid %d) finished\n", pid2);
 }
