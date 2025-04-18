@@ -6,7 +6,7 @@
 /*   By: yukravch <yukravch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 19:18:14 by yukravch          #+#    #+#             */
-/*   Updated: 2025/04/18 14:51:48 by yukravch         ###   ########.fr       */
+/*   Updated: 2025/04/18 15:39:10 by yukravch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,23 +19,22 @@ void	ft_first_child(int file1_fd, char *cmd1, int pipe[2], char **env)
 	args = ft_split(cmd1, ' ');
 	if (ft_strchr(args[0], '/') && (access(args[0], X_OK) == -1))
 	{
-		exit(-1);/*
 		ft_free_args(args);
 		close(file1_fd);
 		close(pipe[0]);
 		close(pipe[1]);
-		ft_exit(args[0]);*/
+		ft_exit("pipex: no such file or directory: ", cmd1);
 	}
 	if (!ft_strchr(args[0], '/'))
 		args[0] = ft_get_absolute_path(env, args[0]);
-	/*if (args[0] == NULL)
+	if (args[0] == NULL)
 	{
 		ft_free_args(args);
 		close(file1_fd);
 		close(pipe[0]);
 		close(pipe[1]);
-		exit(-1);
-	}*/
+		ft_exit("pipex: command not found: ", cmd1);
+	}
 	dup2(file1_fd, STDIN_FILENO);
 	dup2(pipe[1], STDOUT_FILENO);
 	close(file1_fd);
@@ -51,16 +50,16 @@ void	ft_first_child(int file1_fd, char *cmd1, int pipe[2], char **env)
 void	ft_second_child(int file2_fd, char *cmd2, int pipe[2], char **env)
 {
 	char	**args;
-
+	
 	args = ft_split(cmd2, ' ');
 	if (ft_strchr(args[0], '/') && (access(args[0], X_OK) == -1))
 	{
 		ft_free_args(args);
 		close(file2_fd);
 		close(pipe[0]);
-		close(pipe[1]);	
-		perror("pipex2");
-		exit(EXIT_FAILURE);
+		close(pipe[1]);
+		ft_exit("pipex: no such file or directory: ", cmd2);
+
 	}
 	if (!ft_strchr(args[0], '/'))
 		args[0] = ft_get_absolute_path(env, args[0]);
@@ -70,7 +69,7 @@ void	ft_second_child(int file2_fd, char *cmd2, int pipe[2], char **env)
 		close(file2_fd);
 		close(pipe[0]);
 		close(pipe[1]);
-		exit(-1);
+		ft_exit("pipex: command not found: ", cmd2);
 	}
 		
 	dup2(pipe[0], STDIN_FILENO);
@@ -141,7 +140,10 @@ int	main(int ac, char **av, char **env)
 	
 	//ft_parent_process(av, env);
 	if (access(av[1], F_OK) == -1)
-		ft_exit("file1");
+	{
+		perror("pipex: ");
+		exit(EXIT_FAILURE);
+	}
 	pipe(pipe_end);
 
 	pid1 = fork();
@@ -164,8 +166,5 @@ int	main(int ac, char **av, char **env)
 	close(pipe_end[1]);
 	
 	waitpid(pid1, NULL, 0);
-	printf("I'm parent: First child (pid %d) finished\n\n", pid1);
 	waitpid(pid2, NULL, 0);
-	printf("I'm parent: Second child (pid %d) finished\n", pid2);
-	
 }

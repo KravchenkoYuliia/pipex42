@@ -6,19 +6,19 @@
 /*   By: yukravch <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 17:43:36 by yukravch          #+#    #+#             */
-/*   Updated: 2025/04/18 13:44:40 by yukravch         ###   ########.fr       */
+/*   Updated: 2025/04/18 15:34:41 by yukravch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 #include "ft_printf.h"
 
-void	ft_exit(char *msg)
+void	ft_exit(char *msg, char *cmd)
 {
-	perror("pipex");
-	write(2, ": ", 2);
 	write(2, msg, ft_strlen(msg));
+	write(2, cmd, ft_strlen(cmd));
 	write(2, "\n", 1);
+
 	exit(EXIT_FAILURE);
 }
 
