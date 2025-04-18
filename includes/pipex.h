@@ -6,7 +6,7 @@
 /*   By: yukravch <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 19:19:12 by yukravch          #+#    #+#             */
-/*   Updated: 2025/04/16 18:37:42 by yukravch         ###   ########.fr       */
+/*   Updated: 2025/04/18 13:45:05 by yukravch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,10 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 
-typedef struct s_pipe_end{
+void	ft_exit(char *msg);
+char    *ft_get_absolute_path(char **env, char *cmd);
+int     ft_count_args(char **args);
+void    *ft_free_args(char **args);
 
-	int	write;
-	int	read;
-} t_pipe_end;
-void	ft_exit(int fd1, int fd2);
 
 #endif
