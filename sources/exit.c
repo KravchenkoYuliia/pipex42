@@ -6,7 +6,7 @@
 /*   By: yukravch <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 17:43:36 by yukravch          #+#    #+#             */
-/*   Updated: 2025/04/18 15:34:41 by yukravch         ###   ########.fr       */
+/*   Updated: 2025/04/18 16:46:30 by yukravch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,5 +46,16 @@ void	*ft_free_args(char **args)
 	}
 	free(args);
 	return (NULL);
+}
+
+void	ft_close(int fd, int pipe[2])
+{
+	if (fd >= 0)
+		close(fd);
+	if (pipe >= 0)
+	{
+		close(pipe[0]);
+		close(pipe[1]);
+	}
 }
 

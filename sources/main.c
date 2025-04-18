@@ -6,7 +6,7 @@
 /*   By: yukravch <yukravch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 19:18:14 by yukravch          #+#    #+#             */
-/*   Updated: 2025/04/18 15:39:10 by yukravch         ###   ########.fr       */
+/*   Updated: 2025/04/18 18:56:16 by yukravch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void	ft_first_child(int file1_fd, char *cmd1, int pipe[2], char **env)
 	if (execve(args[0], args, NULL) == -1)
 	{
 		ft_free_args(args);
+		perror("pipex");
 		exit(EXIT_FAILURE);
 	}
 }
@@ -80,12 +81,10 @@ void	ft_second_child(int file2_fd, char *cmd2, int pipe[2], char **env)
 	if (execve(args[0], args, NULL) == -1)
 	{
 		ft_free_args(args);
-		perror("pipex2");
+		perror("pipex");
 		exit(EXIT_FAILURE);
 	}
 }
-
-
 /*
 void	ft_parent_process(char **av, char **env)
 {
@@ -96,7 +95,6 @@ void	ft_parent_process(char **av, char **env)
 	ft_fork2();
 }
 */
-
 char	*ft_get_absolute_path(char **env, char *cmd)
 {
 	int	i;
@@ -117,11 +115,18 @@ char	*ft_get_absolute_path(char **env, char *cmd)
 	{
 		add_slash = ft_strjoin(all_files_path[i], "/");
 		file_path = ft_strjoin(add_slash, cmd);
+		free(add_slash);
 		if (access(file_path, X_OK) == 0)
+		{
+			free(cmd);
+			ft_free_args(all_files_path);
 			return (file_path);
+		}
+		free(file_path);
 		i++;
 	}
-	free(file_path);
+	free(cmd);
+	ft_free_args(all_files_path);
 	return (NULL);
 }
 
@@ -139,20 +144,23 @@ int	main(int ac, char **av, char **env)
 	}
 	
 	//ft_parent_process(av, env);
-	if (access(av[1], F_OK) == -1)
-	{
-		perror("pipex: ");
-		exit(EXIT_FAILURE);
-	}
 	pipe(pipe_end);
-
 	pid1 = fork();
 	if (pid1 == 0)
 	{
+		if (access(av[1], F_OK) == -1)
+		{
+			ft_close(-1, pipe_end);
+			ft_exit("pipex: no such file or directory: ", av[1]);
+		}
 		file1_fd = open(av[1], O_RDONLY);
+		if (file1_fd == -1)
+		{
+			ft_close(-1, pipe_end);
+			ft_exit("pipex: permission denied: ", av[1]);
+		}
 		ft_first_child(file1_fd, av[2], pipe_end, env);
 	}
-	
 	pid2 = fork();
 	if (pid2 == 0)
 	{
