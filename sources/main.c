@@ -6,7 +6,7 @@
 /*   By: yukravch <yukravch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 19:18:14 by yukravch          #+#    #+#             */
-/*   Updated: 2025/04/18 20:04:49 by yukravch         ###   ########.fr       */
+/*   Updated: 2025/04/19 14:16:46 by yukravch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ char	*ft_get_absolute_path(char **env, char *cmd)
 void	ft_parent_process(char **av, char **env)
 {
 	int	pipe_end[2];
-	int	pid1;
-	int	pid2;
+	pid_t	pid1;
+	pid_t	pid2;
 
 	pipe(pipe_end);
 	pid1 = fork();
