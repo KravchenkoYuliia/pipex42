@@ -6,12 +6,11 @@
 /*   By: yukravch <yukravch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 19:18:14 by yukravch          #+#    #+#             */
-/*   Updated: 2025/04/19 14:16:46 by yukravch         ###   ########.fr       */
+/*   Updated: 2025/04/19 15:28:14 by yukravch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-#include "ft_printf.h"
 
 char	*ft_add_slash_cmd(char **all_files_path, char *cmd)
 {
@@ -70,8 +69,7 @@ void	ft_parent_process(char **av, char **env)
 	pid2 = fork();
 	if (pid2 == 0)
 		ft_start_of_new_process2(av, env, pipe_end);
-	close(pipe_end[0]);
-	close(pipe_end[1]);
+	ft_close(-1, pipe_end);
 	waitpid(pid1, NULL, 0);
 	waitpid(pid2, NULL, 0);
 }
@@ -80,7 +78,7 @@ int	main(int ac, char **av, char **env)
 {	
 	if (ac != 5)
 	{
-		write(2, "Not enough arguments", 20);
+		write(2, "Not enough arguments\n", 21);
 		exit(EXIT_FAILURE);
 	}
 	ft_parent_process(av, env);

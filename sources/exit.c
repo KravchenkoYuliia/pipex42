@@ -6,12 +6,11 @@
 /*   By: yukravch <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 17:43:36 by yukravch          #+#    #+#             */
-/*   Updated: 2025/04/19 14:02:22 by yukravch         ###   ########.fr       */
+/*   Updated: 2025/04/19 15:32:10 by yukravch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-#include "ft_printf.h"
 
 void	ft_exit(char *msg, char *cmd)
 {
