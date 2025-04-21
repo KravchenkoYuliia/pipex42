@@ -29,10 +29,10 @@ char    *ft_get_absolute_path(char **env, char *cmd);
 int             ft_count_args(char **args);
 void    *ft_free_args(char **args);
 void    ft_close(int fd, int pipe[2]);
-void    ft_start_of_new_process(int cmd_num, char **av, char **env, int pipe[2]);
-void    ft_start_of_new_process2(int cmd_num, char **av, char **env, int pipe[2]);
-void    ft_first_child(int file1_fd, char *cmd1, int pipe[2], char **env);
-void    ft_second_child(int file2_fd, char *cmd2, int pipe[2], char **env);
+int    ft_check_infile(char *filename, int pipe[2]);
+void    ft_child_process();
+void	ft_child_for_first_cmd(char *cmd1, int pipe[2], char **av,char **env);
+void	ft_child_for_last_cmd(char *outfile, char *last_cmd, int pipe[2], char **env);
 void    ft_check_abs_path(char **args, int file, int pipe[2], char *cmd);
 
 #endif

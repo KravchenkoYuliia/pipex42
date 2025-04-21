@@ -56,38 +56,43 @@ char	*ft_get_absolute_path(char **env, char *cmd)
 	return (file_path);
 }
 
-void	ft_parent_process(int cmd_num, char **av, char **env)
+void	ft_parent_process(int cmd_number, int ac, char **av, char **env)
 {
+	int	i;
 	int	pipe_end[2];
-	pid_t	pid1;
-	pid_t	pid2;
+	pid_t	pid;
 
-	pipe(pipe_end);
-	pid1 = fork();
-	if (pid1 == 0)
-		ft_start_of_new_process(cmd_num, av, env, pipe_end);
-	pid2 = fork();
-	if (pid2 == 0)
-		ft_start_of_new_process2(cmd_num + 1, av, env, pipe_end);
-	ft_close(-1, pipe_end);
-	waitpid(pid1, NULL, 0);
-	waitpid(pid2, NULL, 0);
+	i = 1;
+	while (i <= cmd_number)
+	{
+		pipe(pipe_end);
+		pid = fork();
+		if (pid == 0)
+		{
+			if (i + 1 == 2)
+				ft_child_for_first_cmd(av[2], pipe_end, av,env);
+			else if (i + 1 == ac - 2)
+				ft_child_for_last_cmd(av[ac - 1], av[ac - 2], pipe_end, env);
+			else
+				ft_child_process();
+		}
+		dup2(pipe_end[0], STDIN_FILENO);
+		i++;
+		ft_close(-1, pipe_end);
+	}
+	while (waitpid(-1, NULL, 0) != -1)
+	       printf("Received a child\n");	
 }
 
 int	main(int ac, char **av, char **env)
 {
-	int		i;
 	int	cmd_number;
+
 	if (ac < 5)
 	{
 		write(2, "not enough arguments\n", 21);
 		exit(EXIT_FAILURE);
 	}
-	i = 0;
 	cmd_number = ac - 3;
-	while (i < cmd_number)
-	{
-		ft_parent_process(i + 2, av, env);
-		i++;
-	}
+	ft_parent_process(cmd_number, ac, av, env);
 }
