@@ -19,6 +19,12 @@ void	ft_start_of_new_process2(char **av, char **env, int pipe[2])
 	file2_fd = open(av[4],
 			O_RDWR | O_CREAT | O_TRUNC,
 			S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+	if (file2_fd == -1)
+	{
+		ft_close(-1, pipe);
+		perror("pipex");
+		exit(EXIT_FAILURE);
+	}
 	ft_second_child(file2_fd, av[3], pipe, env);
 }
 

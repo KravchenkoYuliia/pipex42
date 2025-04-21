@@ -62,11 +62,23 @@ void	ft_parent_process(char **av, char **env)
 	pid_t	pid1;
 	pid_t	pid2;
 
-	pipe(pipe_end);
+	if (pipe(pipe_end) == -1)
+		exit(EXIT_FAILURE);
 	pid1 = fork();
+	if (pid1 == -1)
+	{
+		ft_close(-1, pipe_end);
+		exit(EXIT_FAILURE);
+	}
 	if (pid1 == 0)
 		ft_start_of_new_process(av, env, pipe_end);
 	pid2 = fork();
+	if (pid2 == -1)
+	{
+		waitpid(pid1, NULL, 0);
+		ft_close(-1, pipe_end);
+		exit(EXIT_FAILURE);
+	}
 	if (pid2 == 0)
 		ft_start_of_new_process2(av, env, pipe_end);
 	ft_close(-1, pipe_end);
