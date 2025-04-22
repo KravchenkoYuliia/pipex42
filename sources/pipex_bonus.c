@@ -74,14 +74,14 @@ void	ft_parent_process(int cmd_number, int ac, char **av, char **env)
 			else if (i + 1 == ac - 2)
 				ft_child_for_last_cmd(av[ac - 1], av[ac - 2], pipe_end, env);
 			else
-				ft_child_process();
+				ft_middle_child(av[i + 1], pipe_end, env);
 		}
 		dup2(pipe_end[0], STDIN_FILENO);
 		i++;
 		ft_close(-1, pipe_end);
 	}
 	while (waitpid(-1, NULL, 0) != -1)
-	       printf("Received a child\n");	
+		continue ;
 }
 
 int	main(int ac, char **av, char **env)

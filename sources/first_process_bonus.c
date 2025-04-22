@@ -110,29 +110,22 @@ void	ft_child_for_last_cmd(char *outfile, char *last_cmd, int pipe[2], char **en
         }
 }
 
-void	ft_child_process()
-{	
-	printf("Doing middle cmd\n");
-	exit(EXIT_SUCCESS);
-}
-	
-	
-	/*
+void	ft_middle_child(char *cmd, int pipe[2], char **env)
+{
         char    **args;
 
-        args = ft_split(cmd1, ' ');
-        ft_check_abs_path(args, file1_fd, pipe, cmd1);
+        args = ft_split(cmd, ' ');
+        ft_check_abs_path(args, -1, pipe, cmd);
         if (!ft_strchr(args[0], '/'))
                 args[0] = ft_get_absolute_path(env, args[0]);
         if (args[0] == NULL)
         {
                 ft_free_args(args);
-                ft_close(file1_fd, pipe);
-                ft_exit("pipex: command not found: ", cmd1);
+                ft_close(-1, pipe);
+                ft_exit("pipex: command not found: ", cmd);
         }
-        dup2(file1_fd, STDIN_FILENO);
         dup2(pipe[1], STDOUT_FILENO);
-        ft_close(file1_fd, pipe);
+        ft_close(-1, pipe);
         if (execve(args[0], args, NULL) == -1)
         {
                 ft_free_args(args);
@@ -140,4 +133,4 @@ void	ft_child_process()
                 exit(EXIT_FAILURE);
         }
 }
-*/
+
