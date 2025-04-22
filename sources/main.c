@@ -90,7 +90,7 @@ int	main(int ac, char **av, char **env)
 {	
 	if (ac != 5)
 	{
-		write(2, "Not enough arguments\n", 21);
+		write(2, "Write 4 arguments\n", 18);
 		exit(EXIT_FAILURE);
 	}
 	ft_parent_process(av, env);
