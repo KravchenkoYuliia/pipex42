@@ -34,7 +34,7 @@ $(NAME): $(OBJ) $(LIB)
 # ********************************************************************************* #
 NAME_BONUS = pipex_bonus
 bonus: $(NAME_BONUS)
-FILES_BONUS = pipex_bonus.c first_process_bonus.c second_process_bonus.c exit_bonus.c
+FILES_BONUS = pipex_bonus.c first_process_bonus.c exit_bonus.c
 SRC_BONUS = $(addprefix $(SRC_DIR)/, $(FILES_BONUS))
 OBJ_BONUS = $(addprefix $(OBJ_DIR)/, $(FILES_BONUS:.c=.o))
 $(NAME_BONUS): $(OBJ_BONUS) $(LIB)
