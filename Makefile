@@ -20,7 +20,7 @@ SRC_DIR = sources
 OBJ_DIR = objects
 INC_DIR = includes -I libft/includes
 
-FILES = main.c first_process.c second_process.c exit.c
+FILES = pipex.c first_process.c second_process.c exit.c
 SRC = $(addprefix $(SRC_DIR)/, $(FILES))
 OBJ = $(addprefix $(OBJ_DIR)/, $(FILES:.c=.o))
 CFLAGS = -Wall -Wextra -Werror -g3 -I $(INC_DIR)
@@ -34,7 +34,7 @@ $(NAME): $(OBJ) $(LIB)
 # ********************************************************************************* #
 NAME_BONUS = pipex_bonus
 bonus: $(NAME_BONUS)
-FILES_BONUS = pipex_bonus.c first_process_bonus.c exit_bonus.c
+FILES_BONUS = pipex_bonus.c check_files_bonus.c child_bonus.c handle_heredoc_bonus.c exit.c
 SRC_BONUS = $(addprefix $(SRC_DIR)/, $(FILES_BONUS))
 OBJ_BONUS = $(addprefix $(OBJ_DIR)/, $(FILES_BONUS:.c=.o))
 $(NAME_BONUS): $(OBJ_BONUS) $(LIB)
@@ -48,4 +48,4 @@ clean:
 	rm -rf $(OBJ_DIR)
 fclean: clean
 	rm -f $(NAME) $(NAME_BONUS)
-re: fclean all
+re: fclean all bonus
