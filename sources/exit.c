@@ -50,9 +50,12 @@ void	ft_close(int fd, int pipe[2])
 {
 	if (fd >= 0)
 		close(fd);
-	if (pipe >= 0)
+	if (pipe[0] >= 0)
 	{
 		close(pipe[0]);
+	}
+	if (pipe[1] >= 0)
+	{
 		close(pipe[1]);
 	}
 }

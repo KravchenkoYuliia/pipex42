@@ -41,13 +41,7 @@ size_t	ft_put_u_nbr_printf(unsigned int nb)
 	size_t	arg_len;
 
 	arg_len = 0;
-	if (nb < 0)
-	{
-		ft_putchar_printf('-');
-		nb *= -1;
-		arg_len++;
-	}
-	if (nb >= 0 && nb <= 9)
+	if (nb <= 9)
 	{
 		ft_putchar_printf('0' + nb);
 		arg_len++;

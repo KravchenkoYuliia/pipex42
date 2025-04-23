@@ -31,5 +31,6 @@ void	*ft_calloc_gnl(size_t nmemb, size_t size);
 int		ft_strlen_gnl(char *str);
 char	*ft_strcpy_gnl(char *dest, char *src);
 int		ft_strchr_gnl(const char *s, int c);
+void	free_gnl_buffer(int fd);
 
 #endif

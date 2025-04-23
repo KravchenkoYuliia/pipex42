@@ -106,4 +106,5 @@ int	main(int ac, char **av, char **env)
 	ft_parent_process(cmd_number, ac, av, env);
 	if (is_heredoc)
 		unlink("heredoc");
+	free_gnl_buffer(STDIN_FILENO);
 }

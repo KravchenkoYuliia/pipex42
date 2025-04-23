@@ -28,7 +28,7 @@ FILES  = ft_isalpha.c ft_isdigit.c ft_isalnum.c ft_isascii.c ft_isprint.c ft_str
                         ft_printf.c ft_print_hexa_printf.c ft_putchar_printf.c ft_putnbr_printf.c \
                         ft_putstr_printf.c \
                         \
-                        get_next_line.c get_next_line_utils.c \
+                        get_next_line.c get_next_line_utils.c get_next_line_utils2.c \
 
 SRC = $(addprefix $(SRC_DIR)/, $(FILES))
 INC = includes/
