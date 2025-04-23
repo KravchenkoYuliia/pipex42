@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   handle_heredoc_bonus.c                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yukravch <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/23 13:32:54 by yukravch          #+#    #+#             */
+/*   Updated: 2025/04/23 15:58:23 by yukravch         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "pipex_bonus.h"
 
 void	ft_handle_heredoc(char **av)
@@ -7,8 +19,10 @@ void	ft_handle_heredoc(char **av)
 	char	*line;
 
 	fd = open("heredoc",
-		O_RDWR | O_CREAT | O_TRUNC,
-		S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+			O_RDWR | O_CREAT | O_TRUNC,
+			S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+	if (fd == -1)
+		exit(EXIT_FAILURE);
 	while (1)
 	{
 		line = get_next_line(STDIN_FILENO);
@@ -16,8 +30,12 @@ void	ft_handle_heredoc(char **av)
 			return ;
 		diff = ft_strncmp(line, av[2], ft_strlen(line));
 		if (diff == 0 || diff == '\n')
+		{
+			free(line);
 			break ;
+		}
 		write(fd, line, ft_strlen(line));
+		free(line);
 	}
 	close(fd);
 }

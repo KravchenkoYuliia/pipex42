@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yukravch <yukravch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 19:18:14 by yukravch          #+#    #+#             */
-/*   Updated: 2025/04/19 15:28:14 by yukravch         ###   ########.fr       */
+/*   Updated: 2025/04/23 13:37:41 by yukravch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ char	*ft_get_absolute_path(char **env, char *cmd)
 
 void	ft_parent_process(char **av, char **env)
 {
-	int	pipe_end[2];
+	int		pipe_end[2];
 	pid_t	pid1;
 	pid_t	pid2;
 
@@ -66,18 +66,14 @@ void	ft_parent_process(char **av, char **env)
 		exit(EXIT_FAILURE);
 	pid1 = fork();
 	if (pid1 == -1)
-	{
-		ft_close(-1, pipe_end);
-		exit(EXIT_FAILURE);
-	}
+		ft_close_exit(-1, pipe_end);
 	if (pid1 == 0)
 		ft_start_of_new_process(av, env, pipe_end);
 	pid2 = fork();
 	if (pid2 == -1)
 	{
 		waitpid(pid1, NULL, 0);
-		ft_close(-1, pipe_end);
-		exit(EXIT_FAILURE);
+		ft_close_exit(-1, pipe_end);
 	}
 	if (pid2 == 0)
 		ft_start_of_new_process2(av, env, pipe_end);

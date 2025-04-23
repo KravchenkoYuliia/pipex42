@@ -6,7 +6,7 @@
 /*   By: yukravch <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 17:43:36 by yukravch          #+#    #+#             */
-/*   Updated: 2025/04/19 15:32:10 by yukravch         ###   ########.fr       */
+/*   Updated: 2025/04/23 13:36:51 by yukravch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,4 +55,10 @@ void	ft_close(int fd, int pipe[2])
 		close(pipe[0]);
 		close(pipe[1]);
 	}
+}
+
+void	ft_close_exit(int fd, int pipe[2])
+{
+	ft_close(fd, pipe);
+	exit(EXIT_FAILURE);
 }

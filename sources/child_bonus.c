@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   first_process_bonus.c                              :+:      :+:    :+:   */
+/*   child_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yukravch <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 15:30:14 by yukravch          #+#    #+#             */
-/*   Updated: 2025/04/19 15:41:18 by yukravch         ###   ########.fr       */
+/*   Updated: 2025/04/23 13:29:15 by yukravch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,9 @@ void	ft_check_abs_path(char **args, int file, int pipe[2], char *cmd)
 	}
 }
 
-
 void	ft_child_for_first_cmd(char *cmd1, int pipe[2], char **av, char **env)
 {
-	int	fd;
+	int		fd;
 	char	**args;
 
 	fd = ft_check_infile(av[1], pipe);
@@ -50,7 +49,8 @@ void	ft_child_for_first_cmd(char *cmd1, int pipe[2], char **av, char **env)
 	}
 }
 
-void	ft_child_for_last_cmd(char *outfile, char *last_cmd, int pipe[2], char **env)
+void	ft_child_for_last_cmd(char *outfile,
+		char *last_cmd, int pipe[2], char **env)
 {
 	int		fd;
 	char	**args;
@@ -99,4 +99,3 @@ void	ft_middle_child(char *cmd, int pipe[2], char **env)
 		exit(EXIT_FAILURE);
 	}
 }
-

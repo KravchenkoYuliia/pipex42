@@ -6,7 +6,7 @@
 /*   By: yukravch <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 14:32:46 by yukravch          #+#    #+#             */
-/*   Updated: 2025/04/19 15:45:41 by yukravch         ###   ########.fr       */
+/*   Updated: 2025/04/23 13:32:29 by yukravch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ char	*ft_get_absolute_path(char **env, char *cmd)
 
 void	ft_parent_process(int cmd_number, int ac, char **av, char **env)
 {
-	int	i;
-	int	pipe_end[2];
+	int		i;
+	int		pipe_end[2];
 	pid_t	pid;
 
 	i = 1;
@@ -70,7 +70,7 @@ void	ft_parent_process(int cmd_number, int ac, char **av, char **env)
 		if (pid == 0)
 		{
 			if (i + 1 == 2)
-				ft_child_for_first_cmd(av[2], pipe_end, av,env);
+				ft_child_for_first_cmd(av[2], pipe_end, av, env);
 			else if (i + 1 == ac - 2)
 				ft_child_for_last_cmd(av[ac - 1], av[ac - 2], pipe_end, env);
 			else
