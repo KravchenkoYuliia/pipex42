@@ -6,7 +6,7 @@
 /*   By: yukravch <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 13:32:54 by yukravch          #+#    #+#             */
-/*   Updated: 2025/04/23 15:58:23 by yukravch         ###   ########.fr       */
+/*   Updated: 2025/04/24 12:56:51 by yukravch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void	ft_handle_heredoc(char **av)
 		write(fd, line, ft_strlen(line));
 		free(line);
 	}
+	get_next_line(-42);
 	close(fd);
 }
 

@@ -6,7 +6,7 @@
 /*   By: yukravch <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/12 18:49:14 by yukravch          #+#    #+#             */
-/*   Updated: 2025/02/17 12:36:07 by yukravch         ###   ########.fr       */
+/*   Updated: 2025/04/24 12:58:29 by yukravch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,12 @@ char	*get_next_line(int fd)
 {
 	static char	*reserve[1024];
 	char		*line;
-
+	
+	if (fd == PIPEX_END)
+	{
+		ft_free_every_fd(reserve);
+		return (NULL);
+	}
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	reserve[fd] = ft_read_buffer(fd, reserve[fd]);

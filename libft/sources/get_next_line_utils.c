@@ -6,7 +6,7 @@
 /*   By: yukravch <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/12 18:52:38 by yukravch          #+#    #+#             */
-/*   Updated: 2025/02/17 12:34:09 by yukravch         ###   ########.fr       */
+/*   Updated: 2025/04/24 12:59:05 by yukravch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,16 @@ int	ft_strchr_gnl(const char *s, int c)
 		i++;
 	}
 	return (0);
+}
+
+void	ft_free_every_fd(char *reserve[1024])
+{
+	int	i;
+
+	i = 0;
+	while (reserve[i])
+	{
+		free(reserve[i]);
+		i++;
+	}
 }
